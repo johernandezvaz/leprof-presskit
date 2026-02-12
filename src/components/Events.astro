@@ -1,0 +1,154 @@
+---
+const venues = [
+  {
+    name: 'Berghain',
+    city: 'Berlin',
+    year: '2025',
+    flyer: 'https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    name: 'Fabric',
+    city: 'London',
+    year: '2024',
+    flyer: 'https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    name: 'Warehouse Project',
+    city: 'Manchester',
+    year: '2024',
+    flyer: 'https://images.pexels.com/photos/2952834/pexels-photo-2952834.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    name: 'Awakenings Festival',
+    city: 'Amsterdam',
+    year: '2024',
+    flyer: 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    name: 'Movement',
+    city: 'Detroit',
+    year: '2023',
+    flyer: 'https://images.pexels.com/photos/1763067/pexels-photo-1763067.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+  {
+    name: 'Kater Blau',
+    city: 'Berlin',
+    year: '2023',
+    flyer: 'https://images.pexels.com/photos/2111015/pexels-photo-2111015.jpeg?auto=compress&cs=tinysrgb&w=600'
+  },
+];
+---
+
+<section id="venues" class="py-32 px-6 md:px-12 lg:px-24">
+  <div class="container mx-auto max-w-5xl">
+    <h2 class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
+      Performed At
+    </h2>
+
+    <div class="space-y-6">
+      {venues.map((venue, index) => (
+        <div class="venue-item border-b border-off-white/10">
+          <button
+            class="venue-trigger w-full flex items-baseline justify-between py-4 text-left transition-colors duration-300"
+            data-venue-index={index}
+            aria-expanded="false"
+          >
+            <div class="space-y-1">
+              <h3 class="venue-name text-2xl md:text-3xl font-light text-off-white transition-colors duration-300">
+                {venue.name}
+              </h3>
+              <p class="text-sm text-off-white/50">{venue.city}</p>
+            </div>
+            <span class="text-off-white/40 text-sm">{venue.year}</span>
+          </button>
+
+          <div
+            class="venue-content overflow-hidden transition-all duration-300 ease-out"
+            style="max-height: 0; opacity: 0;"
+            data-venue-content={index}
+          >
+            <div class="py-8 flex justify-center">
+              <div class="w-full max-w-md">
+                <img
+                  src={venue.flyer}
+                  alt={`${venue.name} flyer`}
+                  class="w-full h-auto"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  let currentlyOpen: number | null = null;
+
+  function toggleVenue(index: number) {
+    const triggers = document.querySelectorAll('.venue-trigger');
+    const contents = document.querySelectorAll('.venue-content');
+    const names = document.querySelectorAll('.venue-name');
+
+    if (currentlyOpen === index) {
+      const content = contents[index] as HTMLElement;
+      content.style.maxHeight = '0';
+      content.style.opacity = '0';
+      content.style.transform = 'translateY(-8px)';
+
+      triggers[index].setAttribute('aria-expanded', 'false');
+      names[index].classList.remove('text-accent');
+
+      currentlyOpen = null;
+    } else {
+      if (currentlyOpen !== null) {
+        const prevContent = contents[currentlyOpen] as HTMLElement;
+        prevContent.style.maxHeight = '0';
+        prevContent.style.opacity = '0';
+        prevContent.style.transform = 'translateY(-8px)';
+
+        triggers[currentlyOpen].setAttribute('aria-expanded', 'false');
+        names[currentlyOpen].classList.remove('text-accent');
+      }
+
+      const content = contents[index] as HTMLElement;
+      const scrollHeight = content.scrollHeight;
+
+      content.style.maxHeight = `${scrollHeight}px`;
+      content.style.opacity = '1';
+      content.style.transform = 'translateY(0)';
+
+      triggers[index].setAttribute('aria-expanded', 'true');
+      names[index].classList.add('text-accent');
+
+      currentlyOpen = index;
+    }
+  }
+
+  document.querySelectorAll('.venue-trigger').forEach((trigger) => {
+    trigger.addEventListener('click', (e) => {
+      const index = parseInt((e.currentTarget as HTMLElement).dataset.venueIndex || '0');
+      toggleVenue(index);
+    });
+  });
+</script>
+
+<style>
+  .venue-trigger {
+    cursor: pointer;
+  }
+
+  .venue-trigger:hover .venue-name {
+    color: var(--accent);
+  }
+
+  .venue-content {
+    transition: max-height 350ms ease-out, opacity 350ms ease-out, transform 350ms ease-out;
+  }
+
+  :root {
+    --accent: #C6A75E;
+  }
+</style>

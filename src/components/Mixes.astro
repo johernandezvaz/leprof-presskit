@@ -1,0 +1,89 @@
+---
+const mixes = [
+  {
+    name: 'Underground Journey Vol. 3',
+    duration: '90 min',
+    platform: 'SoundCloud',
+    link: '#'
+  },
+  {
+    name: 'Peak Time Sessions',
+    duration: '75 min',
+    platform: 'Mixcloud',
+    link: '#'
+  },
+  {
+    name: 'Warehouse Sounds Live',
+    duration: '120 min',
+    platform: 'SoundCloud',
+    link: '#'
+  },
+  {
+    name: 'Melodic Techno Mix',
+    duration: '60 min',
+    platform: 'Mixcloud',
+    link: '#'
+  },
+  {
+    name: 'Dark Frequencies Set',
+    duration: '85 min',
+    platform: 'SoundCloud',
+    link: '#'
+  },
+  {
+    name: 'Berlin Basement Session',
+    duration: '105 min',
+    platform: 'Mixcloud',
+    link: '#'
+  },
+];
+---
+
+<section id="mixes" class="py-24 px-4 bg-dark-bg">
+  <div class="container mx-auto max-w-6xl">
+    <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center text-white">
+      DJ Mixes
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {mixes.map((mix) => (
+        <div class="group relative bg-dark-secondary border border-white/5 rounded-lg p-6 hover:border-accent/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]">
+          <div class="mb-4">
+            <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
+              <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"></path>
+              </svg>
+            </div>
+
+            <h3 class="text-xl font-bold mb-3 text-white group-hover:text-accent transition-colors">
+              {mix.name}
+            </h3>
+
+            <div class="flex items-center gap-4 text-sm text-gray-300 mb-4">
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                {mix.duration}
+              </span>
+              <span class="text-gray-500">|</span>
+              <span>{mix.platform}</span>
+            </div>
+          </div>
+
+          <a
+            href={mix.link}
+            class="flex items-center justify-center gap-2 w-full px-4 py-3 bg-accent/20 border border-accent rounded-lg text-white font-medium hover:bg-accent hover:text-dark-bg transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] group-hover:scale-105"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
+            </svg>
+            Play Mix
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,84 @@
+---
+const works = [
+  {
+    title: 'Midnight Frequencies',
+    year: '2025',
+    type: 'Release',
+    label: 'Underground Records',
+    link: '#'
+  },
+  {
+    title: 'Warehouse Sessions Live',
+    year: '2025',
+    type: 'Mix',
+    label: 'SoundCloud',
+    link: '#'
+  },
+  {
+    title: 'Dark Matter',
+    year: '2024',
+    type: 'Release',
+    label: 'Techno Collective',
+    link: '#'
+  },
+  {
+    title: 'Peak Time Sessions Vol. 2',
+    year: '2024',
+    type: 'Mix',
+    label: 'Mixcloud',
+    link: '#'
+  },
+  {
+    title: 'Electric Dreams',
+    year: '2024',
+    type: 'Release',
+    label: 'Peak Time Music',
+    link: '#'
+  },
+  {
+    title: 'Berlin Basement Set',
+    year: '2023',
+    type: 'Mix',
+    label: 'SoundCloud',
+    link: '#'
+  },
+];
+---
+
+<section id="works" class="py-32 px-6 md:px-12 lg:px-24">
+  <div class="container mx-auto max-w-5xl">
+    <h2 class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
+      Selected Works
+    </h2>
+
+    <div class="space-y-8">
+      {works.map((work) => (
+        <a
+          href={work.link}
+          class="group flex items-baseline justify-between py-4 border-b border-off-white/10 hover:border-accent/40 transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="flex-1 space-y-2">
+            <h3 class="text-2xl md:text-3xl font-light text-off-white group-hover:text-accent transition-colors">
+              {work.title}
+            </h3>
+            <div class="flex items-center gap-4 text-sm text-off-white/50">
+              <span>{work.year}</span>
+              <span>·</span>
+              <span>{work.type}</span>
+              <span>·</span>
+              <span>{work.label}</span>
+            </div>
+          </div>
+
+          <div class="hidden md:flex items-center text-off-white/40 group-hover:text-accent transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

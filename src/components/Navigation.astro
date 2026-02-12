@@ -1,0 +1,71 @@
+---
+const navItems = [
+  { name: 'Works', href: '#works' },
+  { name: 'Venues', href: '#venues' },
+  { name: 'Gallery', href: '#gallery' },
+  { name: 'Contact', href: '#contact' },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-dark/80 backdrop-blur-md border-b border-off-white/5">
+  <div class="container mx-auto px-6 md:px-12 lg:px-24">
+    <div class="flex items-center justify-between h-20">
+      <a href="#hero" class="text-xs uppercase tracking-ultra-wide text-off-white hover:text-accent transition-colors">
+        Presskit
+      </a>
+
+      <ul class="hidden md:flex items-center gap-12">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+            >
+              {item.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <button
+        id="mobile-menu-button"
+        class="md:hidden text-off-white/60 hover:text-accent"
+        aria-label="Toggle menu"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-dark/95 backdrop-blur-md border-b border-off-white/5">
+    <ul class="px-6 py-6 space-y-4">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+          >
+            {item.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileMenuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+
+  document.querySelectorAll('#mobile-menu a').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+    });
+  });
+</script>
