@@ -1,46 +1,39 @@
 ---
 const works = [
   {
-    title: 'Midnight Frequencies',
-    year: '2025',
-    type: 'Release',
-    label: 'Underground Records',
-    link: '#'
+    title: "Sunday on Fire & Le Prof - See The Light",
+    year: "2026",
+    type: "Release",
+    label: "Spotify",
+    link: "https://open.spotify.com/intl-es/track/3zWLhiEnUb6TADott9lZI5?si=af087c7e70494a6d",
   },
   {
-    title: 'Warehouse Sessions Live',
-    year: '2025',
-    type: 'Mix',
-    label: 'SoundCloud',
-    link: '#'
+    title: "TOAN GASVEN & Le Prof - Ven Acercate",
+    year: "2026",
+    type: "Release",
+    label: "Spotify",
+    link: "https://open.spotify.com/intl-es/track/0vYX4BfyCRbx2vDGw28anA?si=d6d2958094504bc3",
   },
   {
-    title: 'Dark Matter',
-    year: '2024',
-    type: 'Release',
-    label: 'Techno Collective',
-    link: '#'
+    title: "Le Prof - Gozate (Radio Edit)",
+    year: "2025",
+    type: "Release",
+    label: "Spotify",
+    link: "https://open.spotify.com/intl-es/track/0oNwt56Jbrgztpp7Cv28VI?si=d82ed89d74544a39",
   },
   {
-    title: 'Peak Time Sessions Vol. 2',
-    year: '2024',
-    type: 'Mix',
-    label: 'Mixcloud',
-    link: '#'
+    title: "Humbe & Reik - Malbec (Le Prof Remix)",
+    year: "2025",
+    type: "Unofficial Remix",
+    label: "Audius",
+    link: "https://audius.co/leprof.mx/malbec-humbe-reik-le-prof-edit",
   },
   {
-    title: 'Electric Dreams',
-    year: '2024',
-    type: 'Release',
-    label: 'Peak Time Music',
-    link: '#'
-  },
-  {
-    title: 'Berlin Basement Set',
-    year: '2023',
-    type: 'Mix',
-    label: 'SoundCloud',
-    link: '#'
+    title: "Showcase Set (Tech House)",
+    year: "2025",
+    type: "Mix",
+    label: "Mixcloud",
+    link: "https://www.mixcloud.com/LeProfMx/dystopia-set-tech-house-le-prof/",
   },
 ];
 ---
@@ -52,33 +45,45 @@ const works = [
     </h2>
 
     <div class="space-y-8">
-      {works.map((work) => (
-        <a
-          href={work.link}
-          class="group flex items-baseline justify-between py-4 border-b border-off-white/10 hover:border-accent/40 transition-colors"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <div class="flex-1 space-y-2">
-            <h3 class="text-2xl md:text-3xl font-light text-off-white group-hover:text-accent transition-colors">
-              {work.title}
-            </h3>
-            <div class="flex items-center gap-4 text-sm text-off-white/50">
-              <span>{work.year}</span>
-              <span>·</span>
-              <span>{work.type}</span>
-              <span>·</span>
-              <span>{work.label}</span>
+      {
+        works.map((work) => (
+          <a
+            href={work.link}
+            class="group flex items-baseline justify-between py-4 border-b border-off-white/10 hover:border-accent/40 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="flex-1 space-y-2">
+              <h3 class="text-2xl md:text-3xl font-light text-off-white group-hover:text-accent transition-colors">
+                {work.title}
+              </h3>
+              <div class="flex items-center gap-4 text-sm text-off-white/50">
+                <span>{work.year}</span>
+                <span>·</span>
+                <span>{work.type}</span>
+                <span>·</span>
+                <span>{work.label}</span>
+              </div>
             </div>
-          </div>
 
-          <div class="hidden md:flex items-center text-off-white/40 group-hover:text-accent transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-            </svg>
-          </div>
-        </a>
-      ))}
+            <div class="hidden md:flex items-center text-off-white/40 group-hover:text-accent transition-colors">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </div>
+          </a>
+        ))
+      }
     </div>
   </div>
 </section>
