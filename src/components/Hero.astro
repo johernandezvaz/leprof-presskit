@@ -1,5 +1,4 @@
 ---
-
 ---
 
 <section
@@ -18,8 +17,8 @@
           <div
             class="flex flex-col text-sm text-off-white/60 tracking-wider uppercase space-y-1"
           >
-            <span>Music Producer / DJ</span>
-            <span>Chihuahua – Mexico</span>
+            <span id="hero-role">Music Producer / DJ</span>
+            <span id="hero-location">Chihuahua – Mexico</span>
           </div>
         </div>
       </div>
@@ -36,3 +35,27 @@
     </div>
   </div>
 </section>
+
+<script>
+  import { getInitialLanguage, getTranslations } from '../lib/i18n';
+  import type { Language } from '../lib/i18n';
+
+  let currentLanguage: Language = getInitialLanguage();
+
+  function updateHeroTranslations() {
+    const t = getTranslations(currentLanguage);
+
+    const roleEl = document.getElementById('hero-role');
+    const locationEl = document.getElementById('hero-location');
+
+    if (roleEl) roleEl.textContent = t.hero.role;
+    if (locationEl) locationEl.textContent = t.hero.location;
+  }
+
+  window.addEventListener('languagechange', ((e: CustomEvent) => {
+    currentLanguage = e.detail.language;
+    updateHeroTranslations();
+  }) as EventListener);
+
+  updateHeroTranslations();
+</script>

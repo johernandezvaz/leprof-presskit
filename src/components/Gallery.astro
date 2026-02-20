@@ -9,7 +9,7 @@ const images = [
 
 <section id="gallery" class="py-32 px-6 md:px-12 lg:px-24">
   <div class="container mx-auto max-w-7xl">
-    <h2 class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
+    <h2 id="gallery-title" class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
       Gallery
     </h2>
 
@@ -18,7 +18,7 @@ const images = [
         <img
           src={images[0]}
           alt="Performance"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          class="gallery-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           loading="lazy"
         />
       </div>
@@ -29,7 +29,7 @@ const images = [
         <img
           src={images[1]}
           alt="Performance"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          class="gallery-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           loading="lazy"
         />
       </div>
@@ -40,7 +40,7 @@ const images = [
         <img
           src={images[2]}
           alt="Performance"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          class="gallery-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           loading="lazy"
         />
       </div>
@@ -49,10 +49,35 @@ const images = [
         <img
           src={images[3]}
           alt="Performance"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          class="gallery-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           loading="lazy"
         />
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  import { getInitialLanguage, getTranslations } from '../lib/i18n';
+  import type { Language } from '../lib/i18n';
+
+  let currentLanguage: Language = getInitialLanguage();
+
+  function updateGalleryTranslations() {
+    const t = getTranslations(currentLanguage);
+
+    const titleEl = document.getElementById('gallery-title');
+    if (titleEl) titleEl.textContent = t.gallery.title;
+
+    document.querySelectorAll('.gallery-img').forEach((img) => {
+      (img as HTMLImageElement).alt = t.gallery.altPerformance;
+    });
+  }
+
+  window.addEventListener('languagechange', ((e: CustomEvent) => {
+    currentLanguage = e.detail.language;
+    updateGalleryTranslations();
+  }) as EventListener);
+
+  updateGalleryTranslations();
+</script>

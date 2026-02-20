@@ -1,17 +1,11 @@
 ---
 const email = "leprofmx@gmail.com";
-const subject = "Booking Inquiry";
-const body = `Hello,
-
-I would like to discuss a potential collaboration or booking.`;
-
-const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 ---
 
 <section id="contact" class="py-32 px-6 md:px-12 lg:px-24">
   <div class="container mx-auto max-w-5xl">
     <div class="border-t border-off-white/10 pt-16">
-      <h2 class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
+      <h2 id="contact-title" class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
         Bookings / Collaborations
       </h2>
 
@@ -25,10 +19,11 @@ const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=
 
         <div>
           <a
-            href={mailtoLink}
+            id="inquiry-link"
+            href={`mailto:${email}`}
             class="inline-flex items-center gap-3 text-off-white/60 hover:text-accent transition-colors group"
           >
-            <span class="text-sm uppercase tracking-wider">Send Inquiry</span>
+            <span id="inquiry-text" class="text-sm uppercase tracking-wider">Send Inquiry</span>
             <svg
               class="w-4 h-4 group-hover:translate-x-1 transition-transform"
               fill="none"
@@ -51,7 +46,40 @@ const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=
 <footer class="py-12 px-6 md:px-12 lg:px-24 border-t border-off-white/10">
   <div class="container mx-auto max-w-5xl">
     <p class="text-off-white/30 text-xs uppercase tracking-wider">
-      © {new Date().getFullYear()} All rights reserved
+      © {new Date().getFullYear()} <span id="footer-text">All rights reserved</span>
     </p>
   </div>
 </footer>
+
+<script>
+  import { getInitialLanguage, getTranslations } from '../lib/i18n';
+  import type { Language } from '../lib/i18n';
+
+  const email = "leprofmx@gmail.com";
+  let currentLanguage: Language = getInitialLanguage();
+
+  function updateContactTranslations() {
+    const t = getTranslations(currentLanguage);
+
+    const titleEl = document.getElementById('contact-title');
+    const inquiryTextEl = document.getElementById('inquiry-text');
+    const inquiryLinkEl = document.getElementById('inquiry-link');
+    const footerTextEl = document.getElementById('footer-text');
+
+    if (titleEl) titleEl.textContent = t.contact.title;
+    if (inquiryTextEl) inquiryTextEl.textContent = t.contact.sendInquiry;
+    if (footerTextEl) footerTextEl.textContent = t.contact.footer;
+
+    if (inquiryLinkEl) {
+      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(t.contact.emailSubject)}&body=${encodeURIComponent(t.contact.emailBody)}`;
+      inquiryLinkEl.setAttribute('href', mailtoLink);
+    }
+  }
+
+  window.addEventListener('languagechange', ((e: CustomEvent) => {
+    currentLanguage = e.detail.language;
+    updateContactTranslations();
+  }) as EventListener);
+
+  updateContactTranslations();
+</script>

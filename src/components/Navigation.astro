@@ -1,61 +1,158 @@
 ---
-const navItems = [
-  { name: 'Works', href: '#works' },
-  { name: 'Venues', href: '#venues' },
-  { name: 'Gallery', href: '#gallery' },
-  { name: 'Contact', href: '#contact' },
-];
 ---
 
 <nav class="fixed top-0 left-0 right-0 z-50 bg-dark/80 backdrop-blur-md border-b border-off-white/5">
   <div class="container mx-auto px-6 md:px-12 lg:px-24">
     <div class="flex items-center justify-between h-20">
-      <a href="#hero" class="text-xs uppercase tracking-ultra-wide text-off-white hover:text-accent transition-colors">
+      <a href="#hero" class="text-xs uppercase tracking-ultra-wide text-off-white hover:text-accent transition-colors" id="presskit-link">
         Presskit
       </a>
 
-      <ul class="hidden md:flex items-center gap-12">
-        {navItems.map((item) => (
+      <div class="flex items-center gap-8">
+        <ul class="hidden md:flex items-center gap-12" id="nav-menu">
           <li>
             <a
-              href={item.href}
-              class="text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+              href="#works"
+              class="nav-link text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+              data-key="works"
             >
-              {item.name}
+              Works
             </a>
           </li>
-        ))}
-      </ul>
+          <li>
+            <a
+              href="#venues"
+              class="nav-link text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+              data-key="venues"
+            >
+              Venues
+            </a>
+          </li>
+          <li>
+            <a
+              href="#gallery"
+              class="nav-link text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+              data-key="gallery"
+            >
+              Gallery
+            </a>
+          </li>
+          <li>
+            <a
+              href="#contact"
+              class="nav-link text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+              data-key="contact"
+            >
+              Contact
+            </a>
+          </li>
+        </ul>
 
-      <button
-        id="mobile-menu-button"
-        class="md:hidden text-off-white/60 hover:text-accent"
-        aria-label="Toggle menu"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
+        <div class="flex items-center gap-2 bg-dark/50 rounded-lg p-1 border border-off-white/10">
+          <button
+            id="lang-en"
+            class="lang-btn px-3 py-1 text-xs uppercase tracking-wider transition-all rounded"
+            data-lang="en"
+          >
+            EN
+          </button>
+          <button
+            id="lang-es"
+            class="lang-btn px-3 py-1 text-xs uppercase tracking-wider transition-all rounded"
+            data-lang="es"
+          >
+            ES
+          </button>
+        </div>
+
+        <button
+          id="mobile-menu-button"
+          class="md:hidden text-off-white/60 hover:text-accent"
+          aria-label="Toggle menu"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
   <div id="mobile-menu" class="hidden md:hidden bg-dark/95 backdrop-blur-md border-b border-off-white/5">
-    <ul class="px-6 py-6 space-y-4">
-      {navItems.map((item) => (
-        <li>
-          <a
-            href={item.href}
-            class="block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-          >
-            {item.name}
-          </a>
-        </li>
-      ))}
+    <ul class="px-6 py-6 space-y-4" id="mobile-nav-menu">
+      <li>
+        <a
+          href="#works"
+          class="nav-link block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+          data-key="works"
+        >
+          Works
+        </a>
+      </li>
+      <li>
+        <a
+          href="#venues"
+          class="nav-link block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+          data-key="venues"
+        >
+          Venues
+        </a>
+      </li>
+      <li>
+        <a
+          href="#gallery"
+          class="nav-link block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+          data-key="gallery"
+        >
+          Gallery
+        </a>
+      </li>
+      <li>
+        <a
+          href="#contact"
+          class="nav-link block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
+          data-key="contact"
+        >
+          Contact
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
 
 <script>
+  import { getInitialLanguage, setLanguage, getTranslations } from '../lib/i18n';
+  import type { Language } from '../lib/i18n';
+
+  let currentLanguage: Language = getInitialLanguage();
+
+  function updateNavTranslations() {
+    const t = getTranslations(currentLanguage);
+
+    const presskitLink = document.getElementById('presskit-link');
+    if (presskitLink) {
+      presskitLink.textContent = t.nav.presskit;
+    }
+
+    document.querySelectorAll('.nav-link').forEach((link) => {
+      const key = (link as HTMLElement).dataset.key;
+      if (key && key in t.nav) {
+        link.textContent = t.nav[key as keyof typeof t.nav];
+      }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach((btn) => {
+      const lang = (btn as HTMLElement).dataset.lang;
+      if (lang === currentLanguage) {
+        btn.classList.add('bg-accent', 'text-dark');
+        btn.classList.remove('text-off-white/60');
+      } else {
+        btn.classList.remove('bg-accent', 'text-dark');
+        btn.classList.add('text-off-white/60');
+      }
+    });
+  }
+
   const mobileMenuButton = document.getElementById('mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
 
@@ -68,4 +165,28 @@ const navItems = [
       mobileMenu?.classList.add('hidden');
     });
   });
+
+  document.querySelectorAll('.lang-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const lang = (btn as HTMLElement).dataset.lang as Language;
+      if (lang !== currentLanguage) {
+        currentLanguage = lang;
+        setLanguage(lang);
+        updateNavTranslations();
+      }
+    });
+  });
+
+  window.addEventListener('languagechange', ((e: CustomEvent) => {
+    currentLanguage = e.detail.language;
+    updateNavTranslations();
+  }) as EventListener);
+
+  updateNavTranslations();
 </script>
+
+<style>
+  .lang-btn {
+    cursor: pointer;
+  }
+</style>
