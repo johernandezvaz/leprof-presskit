@@ -1,40 +1,26 @@
 ---
 const venues = [
-  {
-    name: "Czech Republic",
-    city: "Prague (The Caffeine Rave)",
-    year: "2026",
-    flyer:
-      "https://res.cloudinary.com/dflhguvio/image/upload/v1770924237/WhatsApp_Image_2026-02-12_at_1.19.30_PM_hqno5p.jpg",
-  },
-  {
-    name: "Mexico",
-    city: "Chihuahua (Studio Bar)",
-    year: "2025",
-    flyer:
-      "https://res.cloudinary.com/dflhguvio/image/upload/v1770924380/WhatsApp_Image_2026-02-12_at_1.26.02_PM_plveyh.jpg",
-  },
-  {
-    name: "Mexico",
-    city: "Chihuahua (Ambar)",
-    year: "2025",
-    flyer:
-      "https://res.cloudinary.com/dflhguvio/image/upload/v1770924474/WhatsApp_Image_2026-02-12_at_1.27.33_PM_sznsub.jpg",
-  },
-  {
-    name: "Mexico",
-    city: "Chihuahua (Studio Bar)",
-    year: "2025",
-    flyer:
-      "https://res.cloudinary.com/dflhguvio/image/upload/v1770924537/WhatsApp_Image_2026-02-12_at_1.28.38_PM_guu2d8.jpg",
-  },
-  {
-    name: "Mexico",
-    city: "Chihuahua (El Camino Mezcalería)",
-    year: "2025",
-    flyer:
-      "https://res.cloudinary.com/dflhguvio/image/upload/v1770924645/WhatsApp_Image_2026-02-12_at_1.29.51_PM_bdx4tk.jpg",
-  },
+  { venue: "The Caffeine Rave", city: "Prague", country: "Czech Republic",
+    appearances: [{ date: "2026-02", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924237/WhatsApp_Image_2026-02-12_at_1.19.30_PM_hqno5p.jpg" }] },
+  { venue: "El Camino Mezcaleria", city: "Chihuahua", country: "Mexico",
+    appearances: [
+      { date: "2026-04", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534535/agora_beats_flyer_1_fhtt4n.jpg" },
+      { date: "2026-04", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534535/electro_jugueton_flyer_ibgqnw.jpg" },
+      { date: "2026-05", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534536/agora_beats_flyer_2_emrwc6.jpg" },
+      { date: "2026-07", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534535/electro_room_flyer_bxsbrz.jpg" },
+      { date: "2026-07", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924645/WhatsApp_Image_2026-02-12_at_1.29.51_PM_bdx4tk.jpg" }
+    ] },
+  { venue: "Epicentro Foro", city: "Chihuahua", country: "Mexico",
+    appearances: [{ date: "2026-07", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534534/epicentro_foro_flyer_vorook.jpg" }] },
+  { venue: "La Cerve", city: "Chihuahua", country: "Mexico",
+    appearances: [{ date: "2026-06", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534536/la_cerve_flyer_wgo8jo.jpg" }] },
+  { venue: "Studio Bar", city: "Chihuahua", country: "Mexico",
+    appearances: [
+      { date: "2025-05", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924380/WhatsApp_Image_2026-02-12_at_1.26.02_PM_plveyh.jpg" },
+      { date: "2025-09", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924537/WhatsApp_Image_2026-02-12_at_1.28.38_PM_guu2d8.jpg" }
+    ] },
+  { venue: "Ambar", city: "Chihuahua", country: "Mexico",
+    appearances: [{ date: "2025-06", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924474/WhatsApp_Image_2026-02-12_at_1.27.33_PM_sznsub.jpg" }] }
 ];
 ---
 
@@ -44,97 +30,71 @@ const venues = [
       Performed At
     </h2>
 
-    <div class="space-y-6">
-      {
-        venues.map((venue, index) => (
-          <div class="venue-item border-b border-off-white/10">
-            <button
-              class="venue-trigger w-full flex items-baseline justify-between py-4 text-left transition-colors duration-300"
-              data-venue-index={index}
-              aria-expanded="false"
-            >
-              <div class="space-y-1">
-                <h3 class="venue-name text-2xl md:text-3xl font-light text-off-white transition-colors duration-300">
-                  {venue.name}
-                </h3>
-                <p class="text-sm text-off-white/50">{venue.city}</p>
-              </div>
-              <span class="text-off-white/40 text-sm">{venue.year}</span>
-            </button>
-
-            <div
-              class="venue-content overflow-hidden transition-all duration-300 ease-out"
-              style="max-height: 0; opacity: 0;"
-              data-venue-content={index}
-            >
-              <div class="py-8 flex justify-center">
-                <div class="w-full max-w-md">
-                  <img
-                    src={venue.flyer}
-                    alt={`${venue.name} flyer`}
-                    class="w-full h-auto"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      {venues.map((venue) => (
+        <div>
+          <h3 class="text-2xl md:text-3xl font-light text-off-white mb-1">
+            {venue.venue}
+          </h3>
+          <p class="text-sm text-off-white/50 mb-6">
+            {venue.city}, {venue.country}
+          </p>
+          <div
+            class="grid gap-3"
+            style={`grid-template-columns: repeat(${Math.min(venue.appearances.length, 3)}, 1fr)`}
+          >
+            {venue.appearances.map((appearance) => (
+              <button
+                class="venue-thumb block w-full focus:outline-none"
+                data-flyer={appearance.flyer}
+                data-caption={appearance.date ? `${venue.venue} — ${appearance.date}` : venue.venue}
+              >
+                <img
+                  src={appearance.flyer}
+                  alt={appearance.date ? `${venue.venue} — ${appearance.date}` : venue.venue}
+                  class="aspect-[3/4] w-full object-cover"
+                  loading="lazy"
+                />
+              </button>
+            ))}
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
   </div>
 </section>
 
+<div id="venue-lightbox" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden" role="dialog" aria-modal="true">
+  <button id="venue-lightbox-close" class="absolute top-6 right-6 text-off-white/70 hover:text-off-white text-3xl leading-none" aria-label="Close">&times;</button>
+  <div id="venue-lightbox-inner" class="relative max-w-2xl w-full mx-6">
+    <img id="venue-lightbox-img" src="" alt="" class="w-full h-auto" />
+    <p id="venue-lightbox-caption" class="mt-3 text-sm text-off-white/50 text-center"></p>
+  </div>
+</div>
+
 <script>
-  let currentlyOpen: number | null = null;
+  const lightbox  = document.getElementById('venue-lightbox')!;
+  const lbImg     = document.getElementById('venue-lightbox-img') as HTMLImageElement;
+  const lbCaption = document.getElementById('venue-lightbox-caption')!;
+  const lbClose   = document.getElementById('venue-lightbox-close')!;
 
-  function toggleVenue(index: number) {
-    const triggers = document.querySelectorAll(".venue-trigger");
-    const contents = document.querySelectorAll(".venue-content");
-    const names = document.querySelectorAll(".venue-name");
-
-    if (currentlyOpen === index) {
-      const content = contents[index] as HTMLElement;
-      content.style.maxHeight = "0";
-      content.style.opacity = "0";
-      content.style.transform = "translateY(-8px)";
-
-      triggers[index].setAttribute("aria-expanded", "false");
-      names[index].classList.remove("text-accent");
-
-      currentlyOpen = null;
-    } else {
-      if (currentlyOpen !== null) {
-        const prevContent = contents[currentlyOpen] as HTMLElement;
-        prevContent.style.maxHeight = "0";
-        prevContent.style.opacity = "0";
-        prevContent.style.transform = "translateY(-8px)";
-
-        triggers[currentlyOpen].setAttribute("aria-expanded", "false");
-        names[currentlyOpen].classList.remove("text-accent");
-      }
-
-      const content = contents[index] as HTMLElement;
-      const scrollHeight = content.scrollHeight;
-
-      content.style.maxHeight = `${scrollHeight}px`;
-      content.style.opacity = "1";
-      content.style.transform = "translateY(0)";
-
-      triggers[index].setAttribute("aria-expanded", "true");
-      names[index].classList.add("text-accent");
-
-      currentlyOpen = index;
-    }
-  }
-
-  document.querySelectorAll(".venue-trigger").forEach((trigger) => {
-    trigger.addEventListener("click", (e) => {
-      const index = parseInt(
-        (e.currentTarget as HTMLElement).dataset.venueIndex || "0",
-      );
-      toggleVenue(index);
+  document.querySelectorAll<HTMLButtonElement>('.venue-thumb').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      lbImg.src             = btn.dataset.flyer!;
+      lbImg.alt             = btn.dataset.caption!;
+      lbCaption.textContent = btn.dataset.caption!;
+      lightbox.classList.remove('hidden');
     });
+  });
+
+  function closeLightbox() { lightbox.classList.add('hidden'); }
+
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
   });
 </script>
 
@@ -160,21 +120,12 @@ const venues = [
 </script>
 
 <style>
-  .venue-trigger {
-    cursor: pointer;
+  .venue-thumb img {
+    transition: opacity 200ms ease;
   }
-
-  .venue-trigger:hover .venue-name {
-    color: var(--accent);
+  .venue-thumb:hover img {
+    opacity: 0.75;
   }
-
-  .venue-content {
-    transition:
-      max-height 350ms ease-out,
-      opacity 350ms ease-out,
-      transform 350ms ease-out;
-  }
-
   :root {
     --accent: #c6a75e;
   }

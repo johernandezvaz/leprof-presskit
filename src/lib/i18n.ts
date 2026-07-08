@@ -14,7 +14,7 @@ export const translations = {
       location: 'Chihuahua – Mexico',
     },
     about: {
-      bio: "I'm Le Prof, a DJ and music producer specializing in house, tech house, and Latin house. I live in Chihuahua, where I've played at key events and was a special guest of DJ Xquizit at Lulu's, one of the most popular clubs. I've also brought my energy to private events, solidifying my local presence. Outside the DJ booth, I explore new sounds and musical trends. Let's connect and create unforgettable experiences together through music!",
+      bio: "I'm Le Prof, a DJ and emerging music producer specializing in House, Tech House, and Latin House. My journey has taken me from Chihuahua, Mexico, to Prague, Czech Republic, where I've had the opportunity to share my music with different audiences while supporting local talent and becoming part of new music communities.I'm focused on building a career through meaningful performances,collaborating with artists, and playing at events that allow me to grow while creating genuine connections on the dancefloor.Whether it's an intimate venue, a club, or a festival, my goal is always the same: deliver energetic sets, connect people through music, and keep evolving as an artist. ",
       mission: "Creating sound experiences that foster authentic connection, merging creativity and technique to leave a lasting impression on every performance.",
     },
     works: {
@@ -55,7 +55,7 @@ I would like to discuss a potential collaboration or booking.`,
       location: 'Chihuahua – México',
     },
     about: {
-      bio: "Soy Le Prof, DJ y productor musical especializado en house, tech house y Latin house. Vivo en Chihuahua, donde he tocado en eventos clave y fui invitado especial de DJ Xquizit en Lulu's, uno de los clubes más populares. También he llevado mi energía a eventos privados, consolidando mi presencia local. Fuera de la cabina, exploro nuevos sonidos y tendencias musicales. ¡Conectemos y creemos experiencias inolvidables juntos a través de la música!",
+      bio: "Soy Le Prof, DJ y productor musical emergente especializado en House, Tech House y Latin House. Mi trayectoria me ha llevado desde Chihuahua, México, hasta Praga, República Checa, donde he tenido la oportunidad de compartir mi música con diferentes públicos, apoyando el talento local y formando parte de nuevas comunidades musicales. Me centro en construir una carrera a través de actuaciones significativas, colaborando con artistas y pinchando en eventos que me permitan crecer y crear conexiones auténticas en la pista de baile. Ya sea en un local íntimo, un club o un festival, mi objetivo siempre es el mismo: ofrecer sets llenos de energía, conectar a la gente a través de la música y seguir evolucionando como artista.",
       mission: "Creando experiencias sonoras que fomentan la conexión auténtica, fusionando creatividad y técnica para dejar una impresión duradera en cada presentación.",
     },
     works: {
