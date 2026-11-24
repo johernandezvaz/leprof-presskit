@@ -1,192 +1,211 @@
 ---
+/** Navegación flotante (§7.3), toggle de idioma (§7.4) y menú móvil. */
+import Button from './ui/Button.astro';
+import IconButton from './ui/IconButton.astro';
+import { t } from '../lib/i18n';
+
+const links = [
+  { href: '#statement', key: 'nav.about' },
+  { href: '#works', key: 'nav.works' },
+  { href: '#venues', key: 'nav.venues' },
+  { href: '#gallery', key: 'nav.gallery' },
+  { href: '#contact', key: 'nav.contact' },
+];
+
+// Menú móvil: las 6 secciones numeradas como en §4.5.
+const mobileLinks = [{ href: '#hero', key: 'nav.home' }, ...links];
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const ringTight = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-0';
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-dark/80 backdrop-blur-md border-b border-off-white/5">
-  <div class="container mx-auto px-6 md:px-12 lg:px-24">
-    <div class="flex items-center justify-between h-20">
-      <a href="#hero" class="text-xs uppercase tracking-ultra-wide text-off-white hover:text-accent transition-colors" id="presskit-link">
-        Presskit
-      </a>
+<div class="fixed inset-x-4 top-4 z-40">
+  <nav
+    id="nav-pill"
+    aria-label={t('en', 'nav.primary')}
+    data-key-aria="nav.primary"
+    class="mx-auto flex h-14 max-w-6xl items-center justify-between rounded-full border border-line bg-dark/70 pl-6 pr-2 shadow-[0_8px_32px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors duration-300"
+  >
+    <a href="#hero" class:list={['rounded-full font-display text-[17px] font-semibold tracking-tight text-off-white', ringTight]}>
+      Le Prof
+    </a>
 
-      <div class="flex items-center gap-8">
-        <ul class="hidden md:flex items-center gap-12" id="nav-menu">
+    <ul class="hidden items-center gap-8 lg:flex">
+      {
+        links.map((link) => (
           <li>
             <a
-              href="#works"
-              class="nav-link text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-              data-key="works"
+              href={link.href}
+              class:list={[
+                'nav-link group relative inline-flex h-11 items-center rounded-full font-sans text-ui text-off-white-soft transition-colors duration-150 hover:text-off-white aria-[current=true]:text-off-white',
+                ringTight,
+              ]}
             >
-              Works
+              <span data-key={link.key}>{t('en', link.key)}</span>
+              <span
+                class="absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-accent opacity-0 transition-opacity duration-150 group-aria-[current=true]:opacity-100"
+                aria-hidden="true"
+              />
             </a>
           </li>
-          <li>
-            <a
-              href="#venues"
-              class="nav-link text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-              data-key="venues"
-            >
-              Venues
-            </a>
-          </li>
-          <li>
-            <a
-              href="#gallery"
-              class="nav-link text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-              data-key="gallery"
-            >
-              Gallery
-            </a>
-          </li>
-          <li>
-            <a
-              href="#contact"
-              class="nav-link text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-              data-key="contact"
-            >
-              Contact
-            </a>
-          </li>
-        </ul>
-
-        <div class="flex items-center gap-2 bg-dark/50 rounded-lg p-1 border border-off-white/10">
-          <button
-            id="lang-en"
-            class="lang-btn px-3 py-1 text-xs uppercase tracking-wider transition-all rounded"
-            data-lang="en"
-          >
-            EN
-          </button>
-          <button
-            id="lang-es"
-            class="lang-btn px-3 py-1 text-xs uppercase tracking-wider transition-all rounded"
-            data-lang="es"
-          >
-            ES
-          </button>
-        </div>
-
-        <button
-          id="mobile-menu-button"
-          class="md:hidden text-off-white/60 hover:text-accent"
-          aria-label="Toggle menu"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="mobile-menu" class="hidden md:hidden bg-dark/95 backdrop-blur-md border-b border-off-white/5">
-    <ul class="px-6 py-6 space-y-4" id="mobile-nav-menu">
-      <li>
-        <a
-          href="#works"
-          class="nav-link block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-          data-key="works"
-        >
-          Works
-        </a>
-      </li>
-      <li>
-        <a
-          href="#venues"
-          class="nav-link block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-          data-key="venues"
-        >
-          Venues
-        </a>
-      </li>
-      <li>
-        <a
-          href="#gallery"
-          class="nav-link block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-          data-key="gallery"
-        >
-          Gallery
-        </a>
-      </li>
-      <li>
-        <a
-          href="#contact"
-          class="nav-link block text-xs uppercase tracking-wider text-off-white/60 hover:text-accent transition-colors"
-          data-key="contact"
-        >
-          Contact
-        </a>
-      </li>
+        ))
+      }
     </ul>
+
+    <div class="flex items-center gap-2">
+      <div
+        class="flex rounded-full border border-line bg-dark/50 p-1"
+        role="group"
+        aria-label={t('en', 'nav.language')}
+        data-key-aria="nav.language"
+      >
+        {
+          ['en', 'es'].map((lang) => (
+            <button
+              type="button"
+              class:list={[
+                'lang-btn relative h-8 rounded-full px-3 font-sans text-[12px] font-medium uppercase tracking-[0.1em] text-off-white-muted transition-colors duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 hover:text-off-white aria-pressed:bg-accent aria-pressed:text-dark',
+                ringTight,
+              ]}
+              data-lang={lang}
+              aria-pressed={lang === 'en' ? 'true' : 'false'}
+            >
+              {lang}
+            </button>
+          ))
+        }
+      </div>
+
+      <Button href="#contact" size="sm" class="hidden lg:inline-flex">
+        <span data-key="nav.booking">{t('en', 'nav.booking')}</span>
+      </Button>
+
+      <IconButton
+        id="menu-open"
+        icon="menu"
+        iconSize={24}
+        label={t('en', 'nav.openMenu')}
+        labelKey="nav.openMenu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="lg:hidden"
+      />
+    </div>
+  </nav>
+</div>
+
+<div
+  id="mobile-menu"
+  class="invisible fixed inset-0 z-50 flex flex-col bg-dark px-6 pb-10 pt-4 opacity-0 transition-[opacity,visibility] duration-300 ease-out-expo data-[open]:visible data-[open]:opacity-100 lg:hidden"
+  aria-hidden="true"
+>
+  <div class="flex h-14 items-center justify-between pl-6 pr-2">
+    <span class="font-display text-[17px] font-semibold tracking-tight text-off-white">Le Prof</span>
+    <IconButton id="menu-close" icon="close" iconSize={24} label={t('en', 'nav.closeMenu')} labelKey="nav.closeMenu" />
   </div>
-</nav>
+
+  <ul
+    id="mobile-menu-list"
+    class="mt-12 flex translate-y-6 flex-col gap-6 px-2 transition-transform duration-300 ease-out-expo"
+  >
+    {
+      mobileLinks.map((link, i) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={[
+              'nav-link flex items-baseline gap-4 rounded-3xl font-display text-display-l text-off-white transition-colors duration-150 hover:text-accent',
+              ringTight,
+            ]}
+          >
+            <span class="text-eyebrow tabular-nums text-accent" aria-hidden="true">
+              {pad(i + 1)}
+            </span>
+            <span data-key={link.key}>{t('en', link.key)}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
 
 <script>
-  import { getInitialLanguage, setLanguage, getTranslations } from '../lib/i18n';
+  import { getCurrentLanguage, setLanguage } from '../lib/i18n';
   import type { Language } from '../lib/i18n';
 
-  let currentLanguage: Language = getInitialLanguage();
-
-  function updateNavTranslations() {
-    const t = getTranslations(currentLanguage);
-
-    const presskitLink = document.getElementById('presskit-link');
-    if (presskitLink) {
-      presskitLink.textContent = t.nav.presskit;
-    }
-
-    document.querySelectorAll('.nav-link').forEach((link) => {
-      const key = (link as HTMLElement).dataset.key;
-      if (key && key in t.nav) {
-        link.textContent = t.nav[key as keyof typeof t.nav];
-      }
-    });
-
-    document.querySelectorAll('.lang-btn').forEach((btn) => {
-      const lang = (btn as HTMLElement).dataset.lang;
-      if (lang === currentLanguage) {
-        btn.classList.add('bg-accent', 'text-dark');
-        btn.classList.remove('text-off-white/60');
-      } else {
-        btn.classList.remove('bg-accent', 'text-dark');
-        btn.classList.add('text-off-white/60');
-      }
-    });
+  // Toggle de idioma: aria-pressed marca el activo.
+  const langButtons = document.querySelectorAll<HTMLButtonElement>('.lang-btn');
+  function syncLangButtons(lang: Language) {
+    langButtons.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang)));
   }
-
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-
-  mobileMenuButton?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
-  });
-
-  document.querySelectorAll('#mobile-menu a').forEach((link) => {
-    link.addEventListener('click', () => {
-      mobileMenu?.classList.add('hidden');
-    });
-  });
-
-  document.querySelectorAll('.lang-btn').forEach((btn) => {
+  langButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const lang = (btn as HTMLElement).dataset.lang as Language;
-      if (lang !== currentLanguage) {
-        currentLanguage = lang;
-        setLanguage(lang);
-        updateNavTranslations();
-      }
+      const lang = btn.dataset.lang as Language;
+      if (lang !== getCurrentLanguage()) setLanguage(lang);
     });
   });
+  window.addEventListener('languagechange', ((e: CustomEvent) => syncLangButtons(e.detail.language)) as EventListener);
+  syncLangButtons(getCurrentLanguage());
 
-  window.addEventListener('languagechange', ((e: CustomEvent) => {
-    currentLanguage = e.detail.language;
-    updateNavTranslations();
-  }) as EventListener);
+  // Píldora más opaca tras 24px de scroll.
+  const pill = document.getElementById('nav-pill')!;
+  const onScroll = () => {
+    const scrolled = window.scrollY > 24;
+    pill.classList.toggle('bg-dark/85', scrolled);
+    pill.classList.toggle('bg-dark/70', !scrolled);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
-  updateNavTranslations();
-</script>
-
-<style>
-  .lang-btn {
-    cursor: pointer;
+  // Sección activa (aria-current + punto dorado).
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
+  const sections = document.querySelectorAll<HTMLElement>('main section[id]');
+  const setActive = (id: string) => {
+    navLinks.forEach((link) => {
+      if (link.getAttribute('href') === `#${id}`) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
+  };
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((section) => observer.observe(section));
   }
-</style>
+
+  // Menú móvil.
+  const menu = document.getElementById('mobile-menu')!;
+  const list = document.getElementById('mobile-menu-list')!;
+  const openBtn = document.getElementById('menu-open')!;
+  const closeBtn = document.getElementById('menu-close')!;
+
+  function openMenu() {
+    menu.setAttribute('data-open', '');
+    menu.setAttribute('aria-hidden', 'false');
+    list.classList.replace('translate-y-6', 'translate-y-0');
+    openBtn.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('overflow-hidden');
+    closeBtn.focus();
+  }
+
+  function closeMenu(returnFocus = true) {
+    menu.removeAttribute('data-open');
+    menu.setAttribute('aria-hidden', 'true');
+    list.classList.replace('translate-y-0', 'translate-y-6');
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('overflow-hidden');
+    if (returnFocus) openBtn.focus();
+  }
+
+  openBtn.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', () => closeMenu());
+  menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMenu(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.hasAttribute('data-open')) closeMenu();
+  });
+</script>
