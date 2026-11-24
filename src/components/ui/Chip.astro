@@ -1,0 +1,18 @@
+---
+/** Chip (§7.2): plataforma, tipo, "Próximo". variant: default | gold */
+interface Props {
+  variant?: 'default' | 'gold';
+  class?: string;
+}
+
+const { variant = 'default', class: className } = Astro.props;
+
+const variants = {
+  default: 'border-line-strong text-off-white-soft',
+  gold: 'border-transparent bg-accent/12 text-accent',
+};
+---
+
+<span class:list={['inline-flex h-7 items-center rounded-full border px-3 text-[12px] font-medium', variants[variant], className]}>
+  <slot />
+</span>

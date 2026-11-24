@@ -1,0 +1,41 @@
+---
+/**
+ * Botón de icono (§7.1): círculo de 48px, icono de 20px, aria-label obligatorio.
+ * Pasa `labelKey` para que el aria-label se traduzca (data-key-aria).
+ * variant: outline (por defecto) | gold (satélite, §6.2)
+ */
+import type { HTMLAttributes } from 'astro/types';
+import Icon, { type IconName } from './icons/Icon.astro';
+
+type Props = (HTMLAttributes<'a'> & HTMLAttributes<'button'>) & {
+  icon: IconName;
+  label: string;
+  labelKey?: string;
+  href?: string;
+  variant?: 'outline' | 'gold';
+  iconSize?: 18 | 20 | 24;
+};
+
+const { icon, label, labelKey, href, variant = 'outline', iconSize = 20, class: className, ...rest } = Astro.props;
+
+const base =
+  'inline-grid shrink-0 place-items-center rounded-full transition-[background-color,color,border-color,transform] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none';
+
+const variants = {
+  outline: 'size-12 border border-line-strong text-off-white hover:bg-accent hover:text-dark hover:border-accent',
+  gold: 'size-14 bg-accent text-dark hover:bg-accent-light hover:scale-105 active:bg-accent-deep',
+};
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  href={href}
+  type={href ? undefined : 'button'}
+  aria-label={label}
+  data-key-aria={labelKey}
+  class:list={[base, variants[variant], className]}
+  {...rest}
+>
+  <Icon name={icon} size={iconSize} />
+</Tag>

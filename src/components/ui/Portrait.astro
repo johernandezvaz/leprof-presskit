@@ -1,0 +1,45 @@
+---
+/**
+ * Retrato circular con surcos y satélite (§6.1, §6.2). Solo en Hero y About.
+ * El tamaño lo da `class` (p. ej. "size-[220px] lg:size-[400px]").
+ */
+import Grooves from './Grooves.astro';
+import IconButton from './IconButton.astro';
+import type { IconName } from './icons/Icon.astro';
+import { cld, srcset } from '../../lib/cloudinary';
+import { t } from '../../lib/i18n';
+
+interface Props {
+  src: string;
+  altKey: string;
+  sizes: string;
+  priority?: boolean;
+  satellite: { href: string; icon: IconName; labelKey: string };
+  class?: string;
+}
+
+const { src, altKey, sizes, priority = false, satellite, class: className } = Astro.props;
+---
+
+<div class:list={['relative aspect-square shrink-0', className]}>
+  <Grooves />
+  <img
+    src={cld(src, 1024)}
+    srcset={srcset(src)}
+    sizes={sizes}
+    alt={t('en', altKey)}
+    data-key-alt={altKey}
+    class="relative size-full rounded-full object-cover"
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : undefined}
+    decoding="async"
+  />
+  <IconButton
+    href={satellite.href}
+    icon={satellite.icon}
+    label={t('en', satellite.labelKey)}
+    labelKey={satellite.labelKey}
+    variant="gold"
+    class="absolute bottom-[6%] right-[6%] translate-x-1/3 translate-y-1/3"
+  />
+</div>

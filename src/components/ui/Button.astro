@@ -1,0 +1,40 @@
+---
+/**
+ * Botón (§7.1). Renderiza <a> si hay href, si no <button>.
+ * variant: primary (oro) | secondary (contorno) | text (+ flecha)
+ * size: md (h-12) | sm (h-9, CTA de la nav)
+ */
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './icons/Icon.astro';
+
+type Props = (HTMLAttributes<'a'> & HTMLAttributes<'button'>) & {
+  variant?: 'primary' | 'secondary' | 'text';
+  size?: 'md' | 'sm';
+  href?: string;
+  arrow?: boolean;
+};
+
+const { variant = 'primary', size = 'md', href, arrow = variant === 'text', class: className, ...rest } = Astro.props;
+
+const base =
+  'group inline-flex items-center justify-center gap-2 rounded-full font-sans text-ui transition-[background-color,color,border-color,transform] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none';
+
+const variants = {
+  primary: 'bg-accent text-dark hover:bg-accent-light active:bg-accent-deep',
+  secondary: 'border border-line-strong text-off-white hover:border-accent hover:text-accent',
+  text: 'h-auto px-0 text-off-white-soft hover:text-accent',
+};
+
+const sizes = {
+  md: 'h-12 px-7',
+  sm: 'h-9 px-4',
+};
+
+const classes = [base, variant !== 'text' && sizes[size], variants[variant], className];
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag href={href} type={href ? undefined : 'button'} class:list={classes} {...rest}>
+  <slot />
+  {arrow && <Icon name="arrow-right" size={18} class="transition-transform duration-150 group-hover:translate-x-1" />}
+</Tag>

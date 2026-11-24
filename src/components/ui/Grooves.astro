@@ -1,0 +1,46 @@
+---
+/**
+ * Surcos de vinilo (§6.1). Se coloca dentro del contenedor del retrato:
+ * el SVG mide 1.7× el retrato y los anillos se separan 7% del diámetro.
+ * Opacidades de dentro hacia fuera: 0.40, 0.30, 0.22, 0.15, 0.10.
+ * El 2.º anillo es discontinuo y gira cada 40s. En móvil se ocultan los dos exteriores.
+ */
+const D = 100; // diámetro del retrato en unidades del viewBox
+const STEP = 7; // 7% del diámetro
+const SIZE = 170;
+const C = SIZE / 2;
+const rings = [0.4, 0.3, 0.22, 0.15, 0.1].map((opacity, i) => ({
+  r: D / 2 + STEP * (i + 1) - 0.5,
+  opacity,
+  dashed: i === 1,
+  mobileHidden: i >= 3,
+}));
+---
+
+<svg
+  class="pointer-events-none absolute -inset-[35%] size-[170%] text-accent"
+  viewBox={`0 0 ${SIZE} ${SIZE}`}
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    rings.map((ring) => (
+      <circle
+        cx={C}
+        cy={C}
+        r={ring.r}
+        stroke="currentColor"
+        stroke-width="1"
+        stroke-opacity={ring.opacity}
+        vector-effect="non-scaling-stroke"
+        stroke-dasharray={ring.dashed ? '1.5 4' : undefined}
+        data-spin={ring.dashed ? '' : undefined}
+        class:list={[
+          ring.dashed && 'origin-center animate-[spin_40s_linear_infinite] [transform-box:fill-box] motion-reduce:animate-none',
+          ring.mobileHidden && 'max-md:hidden',
+        ]}
+      />
+    ))
+  }
+</svg>

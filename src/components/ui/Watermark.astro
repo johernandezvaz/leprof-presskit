@@ -1,0 +1,23 @@
+---
+/**
+ * Marca de agua fantasma (§6.3). Debe ir dentro de un contenedor `relative isolate`.
+ * Máximo dos por página (Hero y Contact).
+ */
+import { t } from '../../lib/i18n';
+
+interface Props {
+  textKey: string;
+  class?: string;
+}
+
+const { textKey, class: className } = Astro.props;
+---
+
+<span
+  class:list={[
+    'pointer-events-none absolute -right-[5vw] -z-10 select-none whitespace-nowrap font-display text-watermark text-off-white-ghost',
+    className,
+  ]}
+  aria-hidden="true"
+  data-key={textKey}>{t('en', textKey)}</span
+>
