@@ -1,3 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* DESIGN.md v2 — estilos globales: foco (§11), grano (§5.3), revelado (§8.2), reduced-motion (§8.2). */
+
+@layer base {
+  body {
+    @apply bg-dark font-sans text-body text-off-white antialiased;
+  }
+
+  /* Foco visible por defecto en todo lo interactivo (§11). Los componentes pueden afinarlo. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-dark;
+  }
+
+  ::selection {
+    @apply bg-accent text-dark;
+  }
+}
+
+@layer components {
+  /* Grano (§5.3): capa fija con ruido feTurbulence. */
+  .grain {
+    @apply pointer-events-none fixed inset-0 z-[60];
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Revelado al hacer scroll (§8.2). El estado inicial solo aplica con JS (html.js). */
+  html.js [data-reveal],
+  html.js [data-reveal-stagger] > * {
+    @apply translate-y-6 opacity-0 transition-[opacity,transform] duration-700 ease-out-expo;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.js [data-reveal].is-visible,
+  html.js [data-reveal-stagger].is-visible > * {
+    @apply translate-y-0 opacity-100;
+  }
+
+  /* h1 por líneas: cada línea sube desde translate-y-full dentro de un overflow-hidden. */
+  html.js [data-reveal-lines] [data-line] {
+    @apply block translate-y-full transition-transform duration-700 ease-out-expo;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.js [data-reveal-lines].is-visible [data-line] {
+    @apply translate-y-0;
+  }
+}
+
+/* Sin movimiento: sin revelado, sin rotación de surcos y sin zoom (§8.2). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  html.js [data-reveal],
+  html.js [data-reveal-stagger] > *,
+  html.js [data-reveal-lines] [data-line] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  [data-zoom],
+  [data-spin] {
+    transform: none !important;
+    animation: none !important;
+  }
+}
