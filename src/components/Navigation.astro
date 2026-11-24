@@ -37,7 +37,7 @@ const ringTight = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
             <a
               href={link.href}
               class:list={[
-                'nav-link group relative inline-flex h-11 items-center rounded-full font-sans text-ui text-off-white-soft transition-colors duration-150 hover:text-off-white aria-[current=true]:text-off-white',
+                'nav-link group relative -mx-2 inline-flex h-11 items-center rounded-full px-2 font-sans text-ui text-off-white-soft transition-colors duration-150 hover:text-off-white aria-[current=true]:text-off-white',
                 ringTight,
               ]}
             >
@@ -68,6 +68,8 @@ const ringTight = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
                 ringTight,
               ]}
               data-lang={lang}
+              lang={lang}
+              aria-label={lang === 'en' ? 'English' : 'Español'}
               aria-pressed={lang === 'en' ? 'true' : 'false'}
             >
               {lang}
