@@ -1,129 +1,185 @@
 ---
-const venues = [
-  { venue: "The Caffeine Rave", city: "Prague", country: "Czech Republic",
-    appearances: [{ date: "2026-02", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924237/WhatsApp_Image_2026-02-12_at_1.19.30_PM_hqno5p.jpg" }] },
-  { venue: "El Camino Mezcaleria", city: "Chihuahua", country: "Mexico",
-    appearances: [
-      { date: "2026-04", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534535/agora_beats_flyer_1_fhtt4n.jpg" },
-      { date: "2026-04", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534535/electro_jugueton_flyer_ibgqnw.jpg" },
-      { date: "2026-05", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534536/agora_beats_flyer_2_emrwc6.jpg" },
-      { date: "2026-07", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534535/electro_room_flyer_bxsbrz.jpg" },
-      { date: "2026-07", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924645/WhatsApp_Image_2026-02-12_at_1.29.51_PM_bdx4tk.jpg" }
-    ] },
-  { venue: "Epicentro Foro", city: "Chihuahua", country: "Mexico",
-    appearances: [{ date: "2026-07", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534534/epicentro_foro_flyer_vorook.jpg" }] },
-  { venue: "La Cerve", city: "Chihuahua", country: "Mexico",
-    appearances: [{ date: "2026-06", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1783534536/la_cerve_flyer_wgo8jo.jpg" }] },
-  { venue: "Studio Bar", city: "Chihuahua", country: "Mexico",
-    appearances: [
-      { date: "2025-05", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924380/WhatsApp_Image_2026-02-12_at_1.26.02_PM_plveyh.jpg" },
-      { date: "2025-09", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924537/WhatsApp_Image_2026-02-12_at_1.28.38_PM_guu2d8.jpg" }
-    ] },
-  { venue: "Ambar", city: "Chihuahua", country: "Mexico",
-    appearances: [{ date: "2025-06", flyer: "https://res.cloudinary.com/dflhguvio/image/upload/v1770924474/WhatsApp_Image_2026-02-12_at_1.27.33_PM_sznsub.jpg" }] }
-];
+/** Events (§7.8) + lightbox accesible (§7.10): sección 04. */
+import SectionHeader from './ui/SectionHeader.astro';
+import IconButton from './ui/IconButton.astro';
+import { t } from '../lib/i18n';
+import { cld, srcset } from '../lib/cloudinary';
+import { venues } from '../data/venues';
+
+// "2026-02" → "Feb 2026" / "feb 2026" (§7.8). El HTML estático va en inglés.
+const formatMonth = (ym: string, lang = 'en') => {
+  const [y, m] = ym.split('-').map(Number);
+  return new Intl.DateTimeFormat(lang, { month: 'short', year: 'numeric' }).format(new Date(y, m - 1));
+};
+
+const cards = venues.map((venue) => {
+  const dates = [...new Set(venue.appearances.map((a) => a.date))].sort();
+  return { ...venue, first: dates[0], last: dates[dates.length - 1] };
+});
 ---
 
-<section id="venues" class="py-32 px-6 md:px-12 lg:px-24">
-  <div class="container mx-auto max-w-5xl">
-    <h2 id="venues-title" class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
-      Performed At
-    </h2>
+<section id="venues" class="relative scroll-mt-24 px-6 py-24 md:px-10 md:py-32 lg:px-16 lg:py-40">
+  <div class="mx-auto max-w-6xl">
+    <SectionHeader index={4} eyebrowKey="venues.eyebrow" titleKey="venues.title" />
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-      {venues.map((venue) => (
-        <div>
-          <h3 class="text-2xl md:text-3xl font-light text-off-white mb-1">
-            {venue.venue}
-          </h3>
-          <p class="text-sm text-off-white/50 mb-6">
-            {venue.city}, {venue.country}
-          </p>
-          <div
-            class="grid gap-3"
-            style={`grid-template-columns: repeat(${Math.min(venue.appearances.length, 3)}, 1fr)`}
-          >
-            {venue.appearances.map((appearance) => (
-              <button
-                class="venue-thumb block w-full focus:outline-none"
-                data-flyer={appearance.flyer}
-                data-caption={appearance.date ? `${venue.venue} — ${appearance.date}` : venue.venue}
-              >
-                <img
-                  src={appearance.flyer}
-                  alt={appearance.date ? `${venue.venue} — ${appearance.date}` : venue.venue}
-                  class="aspect-[3/4] w-full object-cover"
-                  loading="lazy"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
+    <ul class="grid gap-6 md:grid-cols-2 md:gap-8" data-reveal-stagger>
+      {
+        cards.map((venue) => (
+          <li>
+            <article class="h-full rounded-3xl border border-line bg-dark-lifted p-6 transition-colors duration-150 hover:border-line-strong hover:bg-dark-raised md:p-8">
+              <header class="mb-6 flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="text-balance font-display text-title text-off-white">{venue.venue}</h3>
+                  <p class="mt-2 text-meta text-off-white-muted">
+                    {venue.city}, {venue.country}
+                  </p>
+                </div>
+                <p class="whitespace-nowrap text-meta tabular-nums text-off-white-muted">
+                  <time datetime={venue.first} data-month={venue.first}>
+                    {formatMonth(venue.first)}
+                  </time>
+                  {venue.last !== venue.first && (
+                    <>
+                      {' – '}
+                      <time datetime={venue.last} data-month={venue.last}>
+                        {formatMonth(venue.last)}
+                      </time>
+                    </>
+                  )}
+                </p>
+              </header>
+
+              <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
+                {venue.appearances.map((appearance) => (
+                  <button
+                    type="button"
+                    class="venue-thumb group/thumb block overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-dark-lifted"
+                    data-flyer={cld(appearance.flyer, 1600)}
+                    data-venue={venue.venue}
+                    data-month={appearance.date}
+                    aria-label={`${t('en', 'venues.openFlyer')}: ${venue.venue} — ${formatMonth(appearance.date)}`}
+                  >
+                    <img
+                      src={cld(appearance.flyer, 640)}
+                      srcset={srcset(appearance.flyer, [640, 1024])}
+                      sizes="(min-width: 768px) 160px, 45vw"
+                      alt=""
+                      class="aspect-[3/4] w-full rounded-2xl object-cover transition-transform duration-700 ease-out-expo group-hover/thumb:scale-[1.03]"
+                      data-zoom
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </button>
+                ))}
+              </div>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
 
-<div id="venue-lightbox" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden" role="dialog" aria-modal="true">
-  <button id="venue-lightbox-close" class="absolute top-6 right-6 text-off-white/70 hover:text-off-white text-3xl leading-none" aria-label="Close">&times;</button>
-  <div id="venue-lightbox-inner" class="relative max-w-2xl w-full mx-6">
-    <img id="venue-lightbox-img" src="" alt="" class="w-full h-auto" />
-    <p id="venue-lightbox-caption" class="mt-3 text-sm text-off-white/50 text-center"></p>
-  </div>
+<div
+  id="venue-lightbox"
+  class="group pointer-events-none fixed inset-0 z-[70] grid place-items-center bg-dark/90 p-6 opacity-0 backdrop-blur-md transition-opacity duration-200 data-[open]:pointer-events-auto data-[open]:opacity-100"
+  role="dialog"
+  aria-modal="true"
+  aria-label={t('en', 'venues.dialog')}
+  data-key-aria="venues.dialog"
+  inert
+>
+  <IconButton
+    id="venue-lightbox-close"
+    icon="close"
+    label={t('en', 'venues.close')}
+    labelKey="venues.close"
+    class="absolute right-6 top-6"
+  />
+  <figure class="flex scale-95 flex-col items-center transition-transform duration-300 ease-out-expo group-data-[open]:scale-100">
+    <img id="venue-lightbox-img" src="" alt="" class="max-h-[85svh] w-auto rounded-3xl" />
+    <figcaption id="venue-lightbox-caption" class="mt-4 text-center text-meta text-off-white-muted"></figcaption>
+  </figure>
 </div>
 
 <script>
-  const lightbox  = document.getElementById('venue-lightbox')!;
-  const lbImg     = document.getElementById('venue-lightbox-img') as HTMLImageElement;
-  const lbCaption = document.getElementById('venue-lightbox-caption')!;
-  const lbClose   = document.getElementById('venue-lightbox-close')!;
-
-  document.querySelectorAll<HTMLButtonElement>('.venue-thumb').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      lbImg.src             = btn.dataset.flyer!;
-      lbImg.alt             = btn.dataset.caption!;
-      lbCaption.textContent = btn.dataset.caption!;
-      lightbox.classList.remove('hidden');
-    });
-  });
-
-  function closeLightbox() { lightbox.classList.add('hidden'); }
-
-  lbClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
-</script>
-
-<script>
-  import { getInitialLanguage, getTranslations } from '../lib/i18n';
+  import { getCurrentLanguage, getTranslations } from '../lib/i18n';
   import type { Language } from '../lib/i18n';
 
-  let currentLanguage: Language = getInitialLanguage();
+  const formatMonth = (ym: string, lang: Language) => {
+    const [y, m] = ym.split('-').map(Number);
+    return new Intl.DateTimeFormat(lang, { month: 'short', year: 'numeric' }).format(new Date(y, m - 1));
+  };
 
-  function updateVenuesTranslations() {
-    const t = getTranslations(currentLanguage);
+  const thumbs = document.querySelectorAll<HTMLButtonElement>('.venue-thumb');
+  const caption = (btn: HTMLButtonElement, lang: Language) =>
+    `${btn.dataset.venue} — ${formatMonth(btn.dataset.month!, lang)}`;
 
-    const titleEl = document.getElementById('venues-title');
-    if (titleEl) titleEl.textContent = t.venues.title;
+  // Fechas y etiquetas traducidas.
+  function localize(lang: Language) {
+    const t = getTranslations(lang);
+    document.querySelectorAll<HTMLTimeElement>('#venues time[data-month]').forEach((el) => {
+      el.textContent = formatMonth(el.dataset.month!, lang);
+    });
+    thumbs.forEach((btn) => btn.setAttribute('aria-label', `${t.venues.openFlyer}: ${caption(btn, lang)}`));
+  }
+  window.addEventListener('languagechange', ((e: CustomEvent) => localize(e.detail.language)) as EventListener);
+  localize(getCurrentLanguage());
+
+  // Lightbox (§7.10): focus trap, foco inicial en cerrar, retorno de foco, scroll lock, Escape, clic fuera.
+  const lightbox = document.getElementById('venue-lightbox')!;
+  const lbImg = document.getElementById('venue-lightbox-img') as HTMLImageElement;
+  const lbCaption = document.getElementById('venue-lightbox-caption')!;
+  const lbClose = document.getElementById('venue-lightbox-close') as HTMLButtonElement;
+  let trigger: HTMLButtonElement | null = null;
+
+  const isOpen = () => lightbox.hasAttribute('data-open');
+
+  function open(btn: HTMLButtonElement) {
+    trigger = btn;
+    const text = caption(btn, getCurrentLanguage());
+    lbImg.src = btn.dataset.flyer!;
+    lbImg.alt = text;
+    lbCaption.textContent = text;
+    lightbox.setAttribute('data-open', '');
+    lightbox.inert = false;
+    document.body.classList.add('overflow-hidden');
+    lbClose.focus();
   }
 
-  window.addEventListener('languagechange', ((e: CustomEvent) => {
-    currentLanguage = e.detail.language;
-    updateVenuesTranslations();
-  }) as EventListener);
+  function close() {
+    lightbox.removeAttribute('data-open');
+    lightbox.inert = true;
+    document.body.classList.remove('overflow-hidden');
+    trigger?.focus();
+    trigger = null;
+  }
 
-  updateVenuesTranslations();
+  thumbs.forEach((btn) => btn.addEventListener('click', () => open(btn)));
+  lbClose.addEventListener('click', close);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!isOpen()) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      close();
+    } else if (e.key === 'Tab') {
+      // Único elemento focusable dentro del diálogo: el botón de cerrar.
+      const focusables = lightbox.querySelectorAll<HTMLElement>('button, [href], [tabindex]:not([tabindex="-1"])');
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      } else if (!lightbox.contains(document.activeElement)) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
 </script>
-
-<style>
-  .venue-thumb img {
-    transition: opacity 200ms ease;
-  }
-  .venue-thumb:hover img {
-    opacity: 0.75;
-  }
-</style>

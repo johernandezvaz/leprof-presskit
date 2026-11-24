@@ -1,83 +1,41 @@
 ---
-const images = [
-  "https://res.cloudinary.com/dflhguvio/image/upload/v1771621318/WhatsApp_Image_2026-02-20_at_3.01.43_PM_rb3skw.jpg",
-  "https://res.cloudinary.com/dflhguvio/image/upload/v1771621374/WhatsApp_Image_2026-02-20_at_3.02.38_PM_qczuij.jpg",
-  "https://res.cloudinary.com/dflhguvio/image/upload/v1771621446/590419052_18496440130072273_2923590184202874921_n_tpuzzz.jpg",
-  "https://res.cloudinary.com/dflhguvio/image/upload/v1771621452/588579815_18496440145072273_1706720539163291983_n_vr5eyr.jpg",
+/** Gallery (§7.9): sección 05. Bento de 12 columnas, spans 7/5 y 4/8. */
+import SectionHeader from './ui/SectionHeader.astro';
+import { t } from '../lib/i18n';
+import { cld, srcset } from '../lib/cloudinary';
+import { galleryImages } from '../data/gallery';
+
+// Spans y proporciones del bento. En md+ la celda "aspect-auto" toma la altura de su fila.
+const tiles = [
+  { span: 'md:col-span-7', aspect: 'aspect-[16/10]', sizes: '(min-width: 768px) 58vw, 100vw' },
+  { span: 'md:col-span-5', aspect: 'aspect-square md:aspect-auto', sizes: '(min-width: 768px) 42vw, 100vw' },
+  { span: 'md:col-span-4', aspect: 'aspect-[4/5]', sizes: '(min-width: 768px) 33vw, 100vw' },
+  { span: 'md:col-span-8', aspect: 'aspect-[16/10] md:aspect-auto', sizes: '(min-width: 768px) 67vw, 100vw' },
 ];
 ---
 
-<section id="gallery" class="py-32 px-6 md:px-12 lg:px-24">
-  <div class="container mx-auto max-w-7xl">
-    <h2 id="gallery-title" class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
-      Gallery
-    </h2>
+<section id="gallery" class="relative scroll-mt-24 px-6 py-24 md:px-10 md:py-32 lg:px-16 lg:py-40">
+  <div class="mx-auto max-w-6xl">
+    <SectionHeader index={5} eyebrowKey="gallery.eyebrow" titleKey="gallery.title" />
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-      <div class="md:col-span-8 aspect-[4/3] overflow-hidden group">
-        <img
-          src={images[0]}
-          alt="Performance"
-          class="gallery-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          loading="lazy"
-        />
-      </div>
-
-      <div
-        class="md:col-span-4 aspect-[3/4] md:aspect-auto overflow-hidden group"
-      >
-        <img
-          src={images[1]}
-          alt="Performance"
-          class="gallery-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          loading="lazy"
-        />
-      </div>
-
-      <div
-        class="md:col-span-5 aspect-[3/4] md:aspect-auto overflow-hidden group"
-      >
-        <img
-          src={images[2]}
-          alt="Performance"
-          class="gallery-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          loading="lazy"
-        />
-      </div>
-
-      <div class="md:col-span-7 aspect-[4/3] overflow-hidden group">
-        <img
-          src={images[3]}
-          alt="Performance"
-          class="gallery-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          loading="lazy"
-        />
-      </div>
+    <div class="grid grid-cols-12 gap-6 md:gap-8" data-reveal-stagger>
+      {
+        galleryImages.map((src, i) => (
+          <figure class:list={['group relative isolate col-span-12 overflow-hidden rounded-3xl', tiles[i].span, tiles[i].aspect]}>
+            <img
+              src={cld(src, 1024)}
+              srcset={srcset(src)}
+              sizes={tiles[i].sizes}
+              alt={t('en', 'gallery.altPerformance')}
+              data-key-alt="gallery.altPerformance"
+              class="absolute inset-0 size-full object-cover transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.04]"
+              data-zoom
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        ))
+      }
     </div>
   </div>
 </section>
-
-<script>
-  import { getInitialLanguage, getTranslations } from '../lib/i18n';
-  import type { Language } from '../lib/i18n';
-
-  let currentLanguage: Language = getInitialLanguage();
-
-  function updateGalleryTranslations() {
-    const t = getTranslations(currentLanguage);
-
-    const titleEl = document.getElementById('gallery-title');
-    if (titleEl) titleEl.textContent = t.gallery.title;
-
-    document.querySelectorAll('.gallery-img').forEach((img) => {
-      (img as HTMLImageElement).alt = t.gallery.altPerformance;
-    });
-  }
-
-  window.addEventListener('languagechange', ((e: CustomEvent) => {
-    currentLanguage = e.detail.language;
-    updateGalleryTranslations();
-  }) as EventListener);
-
-  updateGalleryTranslations();
-</script>

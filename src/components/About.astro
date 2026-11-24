@@ -1,61 +1,36 @@
 ---
+/** About / Statement (§7.6): sección 02. */
+import SectionHeader from './ui/SectionHeader.astro';
+import Portrait from './ui/Portrait.astro';
+import { splitLead, t } from '../lib/i18n';
+import { galleryImages } from '../data/gallery';
+
+const [lead, rest] = splitLead(t('en', 'about.bio'));
 ---
 
-<section id="statement" class="py-32 px-6 md:px-12 lg:px-24">
-  <div class="container mx-auto max-w-4xl">
-    <div class="space-y-16">
-      <div class="space-y-8">
-        <p
-          id="about-bio"
-          class="text-3xl md:text-4xl lg:text-5xl font-light text-off-white leading-relaxed"
-        >
-          I'm Le Prof, a DJ and emerging music producer specializing in House,
-          Tech House, and Latin House. My journey has taken me from Chihuahua,
-          Mexico, to Prague, Czech Republic, where I've had the opportunity to
-          share my music with different audiences while supporting local talent
-          and becoming part of new music communities.
+<section id="statement" class="relative scroll-mt-24 overflow-hidden px-6 py-24 md:px-10 md:py-32 lg:px-16 lg:py-40">
+  <div class="mx-auto max-w-6xl">
+    <SectionHeader index={2} eyebrowKey="about.eyebrow" titleKey="about.title" />
 
-          I'm focused on building a career through meaningful performances,
-          collaborating with artists, and playing at events that allow me to grow
-          while creating genuine connections on the dancefloor. Whether it's an
-          intimate venue, a club, or a festival, my goal is always the same:
-          deliver energetic sets, connect people through music, and keep evolving
-          as an artist. 
-
-        </p>
+    <div class="grid grid-cols-12 items-start gap-6 md:gap-8">
+      <div class="col-span-12 mb-16 flex justify-center md:col-span-4 md:mb-0 md:mt-16 md:justify-start" data-reveal>
+        <Portrait
+          src={galleryImages[2]}
+          altKey="about.portraitAlt"
+          sizes="(min-width: 1024px) 280px, 220px"
+          satellite={{ href: '#contact', icon: 'arrow-right', labelKey: 'about.contactAria' }}
+          class="size-[220px] lg:size-[280px]"
+        />
       </div>
 
-      <div class="border-t border-off-white/10 pt-12">
-        <p id="about-mission" class="text-lg text-off-white/70 leading-relaxed max-w-2xl">
-          Creating sound experiences that foster authentic connection, merging
-          creativity and technique to leave a lasting impression on every
-          performance.
+      <div class="col-span-12 md:col-span-8" data-reveal>
+        <p class="text-pretty font-sans text-display-m font-light" data-key-lead="about.bio">
+          <span class="text-off-white" data-lead>{lead}</span><span class="text-off-white-soft" data-rest>{` ${rest}`}</span>
+        </p>
+        <p class="mt-12 max-w-[60ch] text-pretty text-body-l text-off-white-soft" data-key="about.mission">
+          {t('en', 'about.mission')}
         </p>
       </div>
     </div>
   </div>
 </section>
-
-<script>
-  import { getInitialLanguage, getTranslations } from '../lib/i18n';
-  import type { Language } from '../lib/i18n';
-
-  let currentLanguage: Language = getInitialLanguage();
-
-  function updateAboutTranslations() {
-    const t = getTranslations(currentLanguage);
-
-    const bioEl = document.getElementById('about-bio');
-    const missionEl = document.getElementById('about-mission');
-
-    if (bioEl) bioEl.textContent = t.about.bio;
-    if (missionEl) missionEl.textContent = t.about.mission;
-  }
-
-  window.addEventListener('languagechange', ((e: CustomEvent) => {
-    currentLanguage = e.detail.language;
-    updateAboutTranslations();
-  }) as EventListener);
-
-  updateAboutTranslations();
-</script>

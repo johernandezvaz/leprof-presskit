@@ -1,121 +1,61 @@
 ---
-const works = [
-  {
-    title: "Sunday on Fire & Le Prof - See The Light",
-    year: "2026",
-    type: "Release",
-    label: "Spotify",
-    link: "https://open.spotify.com/intl-es/track/3zWLhiEnUb6TADott9lZI5?si=af087c7e70494a6d",
-  },
-  {
-    title: "TOAN GASVEN & Le Prof - Ven Acercate",
-    year: "2026",
-    type: "Release",
-    label: "Spotify",
-    link: "https://open.spotify.com/intl-es/track/0vYX4BfyCRbx2vDGw28anA?si=d6d2958094504bc3",
-  },
-  {
-    title: "Le Prof - Gozate (Radio Edit)",
-    year: "2025",
-    type: "Release",
-    label: "Spotify",
-    link: "https://open.spotify.com/intl-es/track/0oNwt56Jbrgztpp7Cv28VI?si=d82ed89d74544a39",
-  },
-  {
-    title: "Humbe & Reik - Malbec (Le Prof Remix)",
-    year: "2025",
-    type: "Unofficial Remix",
-    label: "Audius",
-    link: "https://audius.co/leprof.mx/malbec-humbe-reik-le-prof-edit",
-  },
-  {
-    title: "Showcase Set (Tech House)",
-    year: "2025",
-    type: "Mix",
-    label: "Mixcloud",
-    link: "https://www.mixcloud.com/LeProfMx/dystopia-set-tech-house-le-prof/",
-  },
-];
+/** Selected works (§7.7): sección 03, superficie dark-lifted. */
+import SectionHeader from './ui/SectionHeader.astro';
+import Chip from './ui/Chip.astro';
+import Icon from './ui/icons/Icon.astro';
+import { t } from '../lib/i18n';
+import { works, type WorkType } from '../data/works';
+
+const typeKeys: Record<WorkType, string> = {
+  Release: 'works.type.release',
+  'Unofficial Remix': 'works.type.unofficialRemix',
+  Mix: 'works.type.mix',
+};
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<section id="works" class="py-32 px-6 md:px-12 lg:px-24">
-  <div class="container mx-auto max-w-5xl">
-    <h2 id="works-title" class="text-sm uppercase tracking-ultra-wide text-off-white/40 mb-16">
-      Selected Works
-    </h2>
+<section id="works" class="relative scroll-mt-24 bg-dark-lifted px-6 py-24 md:px-10 md:py-32 lg:px-16 lg:py-40">
+  <div class="mx-auto max-w-6xl">
+    <SectionHeader index={3} eyebrowKey="works.eyebrow" titleKey="works.title" />
 
-    <div class="space-y-8">
+    <ul data-reveal-stagger>
       {
-        works.map((work, index) => (
-          <a
-            href={work.link}
-            class="group flex items-baseline justify-between py-4 border-b border-off-white/10 hover:border-accent/40 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div class="flex-1 space-y-2">
-              <h3 class="text-2xl md:text-3xl font-light text-off-white group-hover:text-accent transition-colors">
-                {work.title}
-              </h3>
-              <div class="flex items-center gap-4 text-sm text-off-white/50">
-                <span>{work.year}</span>
-                <span>·</span>
-                <span class="work-type" data-type={work.type} data-index={index}>{work.type}</span>
-                <span>·</span>
-                <span>{work.label}</span>
+        works.map((work, i) => (
+          <li>
+            <a
+              href={work.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group -mx-4 grid grid-cols-[3ch_1fr_auto] items-center gap-4 rounded-3xl border-b border-line px-4 py-6 transition-colors duration-150 hover:bg-accent/[0.04] focus-visible:bg-accent/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:grid-cols-[4ch_1fr_auto_auto] md:gap-8 md:rounded-full"
+            >
+              <span class="text-meta tabular-nums text-off-white-muted transition-colors duration-150 group-hover:text-accent">
+                {pad(i + 1)}
+              </span>
+              <div>
+                <h3 class="block text-balance font-display text-title text-off-white transition-colors duration-150 group-hover:text-accent">
+                  {work.title}
+                </h3>
+                <span class="mt-2 block text-meta tabular-nums text-off-white-muted">
+                  {work.year} · <span data-key={typeKeys[work.type]}>{t('en', typeKeys[work.type])}</span>
+                  <span class="md:hidden">· {work.label}</span>
+                </span>
+                <span class="sr-only">
+                  (<span data-key="works.opensNewTab">{t('en', 'works.opensNewTab')}</span>)
+                </span>
               </div>
-            </div>
-
-            <div class="hidden md:flex items-center text-off-white/40 group-hover:text-accent transition-colors">
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+              <span class="hidden md:inline-flex">
+                <Chip>{work.label}</Chip>
+              </span>
+              <span
+                class="grid size-11 place-items-center rounded-full border border-line-strong text-off-white transition-colors duration-150 group-hover:border-accent group-hover:bg-accent group-hover:text-dark"
+                aria-hidden="true"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-            </div>
-          </a>
+                <Icon name="arrow-up-right" size={18} />
+              </span>
+            </a>
+          </li>
         ))
       }
-    </div>
+    </ul>
   </div>
 </section>
-
-<script>
-  import { getInitialLanguage, getTranslations } from '../lib/i18n';
-  import type { Language } from '../lib/i18n';
-
-  let currentLanguage: Language = getInitialLanguage();
-
-  function updateTracksTranslations() {
-    const t = getTranslations(currentLanguage);
-
-    const titleEl = document.getElementById('works-title');
-    if (titleEl) titleEl.textContent = t.works.title;
-
-    document.querySelectorAll('.work-type').forEach((el) => {
-      const type = (el as HTMLElement).dataset.type;
-      if (type === 'Release') {
-        el.textContent = t.works.type.release;
-      } else if (type === 'Unofficial Remix') {
-        el.textContent = t.works.type.unofficialRemix;
-      } else if (type === 'Mix') {
-        el.textContent = t.works.type.mix;
-      }
-    });
-  }
-
-  window.addEventListener('languagechange', ((e: CustomEvent) => {
-    currentLanguage = e.detail.language;
-    updateTracksTranslations();
-  }) as EventListener);
-
-  updateTracksTranslations();
-</script>

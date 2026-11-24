@@ -96,8 +96,8 @@ const ringTight = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
 
 <div
   id="mobile-menu"
-  class="invisible fixed inset-0 z-50 flex flex-col bg-dark px-6 pb-10 pt-4 opacity-0 transition-[opacity,visibility] duration-300 ease-out-expo data-[open]:visible data-[open]:opacity-100 lg:hidden"
-  aria-hidden="true"
+  class="pointer-events-none fixed inset-0 z-50 flex flex-col bg-dark px-6 pb-10 pt-4 opacity-0 transition-opacity duration-300 ease-out-expo data-[open]:pointer-events-auto data-[open]:opacity-100 lg:hidden"
+  inert
 >
   <div class="flex h-14 items-center justify-between pl-6 pr-2">
     <span class="font-display text-[17px] font-semibold tracking-tight text-off-white">Le Prof</span>
@@ -186,7 +186,7 @@ const ringTight = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
 
   function openMenu() {
     menu.setAttribute('data-open', '');
-    menu.setAttribute('aria-hidden', 'false');
+    menu.inert = false;
     list.classList.replace('translate-y-6', 'translate-y-0');
     openBtn.setAttribute('aria-expanded', 'true');
     document.body.classList.add('overflow-hidden');
@@ -195,7 +195,7 @@ const ringTight = 'focus-visible:outline-none focus-visible:ring-2 focus-visible
 
   function closeMenu(returnFocus = true) {
     menu.removeAttribute('data-open');
-    menu.setAttribute('aria-hidden', 'true');
+    menu.inert = true;
     list.classList.replace('translate-y-0', 'translate-y-6');
     openBtn.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('overflow-hidden');
